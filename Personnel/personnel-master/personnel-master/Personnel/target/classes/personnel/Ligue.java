@@ -106,11 +106,20 @@ public class Ligue implements Serializable, Comparable<Ligue>
 	 * @param prenom le prénom de l'employé.
 	 * @param mail l'adresse mail de l'employé.
 	 * @param password le password de l'employé.
-	 * @return l'employé créé. 
+	 * @param dateArrive la date d'arrivée de l'employé.
+	 * @param dateDepart la date de départ de l'employé (peut être null).
+	 * @return l'employé créé.
+	 * @throws Erreurdate si les dates sont invalides.
 	 */
 
-	public Employe addEmploye(String nom, String prenom, String mail, String password, LocalDate dateArrive, LocalDate dateDepart)
+	public Employe addEmploye(String nom, String prenom, String mail, String password, LocalDate dateArrive, LocalDate dateDepart) throws Erreurdate
 	{
+		if (dateArrive == null)
+			throw new Erreurdate("La date d'arrivée ne peut pas être null.");
+		
+		if (dateDepart != null && dateDepart.isBefore(dateArrive))
+			throw new Erreurdate("La date de départ ne peut pas être avant la date d'arrivée.");
+		
 		Employe employe = new Employe(this.gestionPersonnel, this, nom, prenom, mail, password, dateArrive, dateDepart);
 		employes.add(employe);
 		return employe;

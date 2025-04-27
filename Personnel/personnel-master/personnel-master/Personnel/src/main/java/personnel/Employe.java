@@ -149,8 +149,23 @@ public class Employe implements Serializable, Comparable<Employe>
 		return this.ligue;
 	}
 
+	/**
+	 * Retourne la date d'arrivée de l'employé.
+	 * @return la date d'arrivée de l'employé.
+	 */
+	public LocalDate getDateArrive()
+	{
+		return dateArrive;
+	}
 
-
+	/**
+	 * Retourne la date de départ de l'employé.
+	 * @return la date de départ de l'employé.
+	 */
+	public LocalDate getDateDepart()
+	{
+		return dateDepart;
+	}
 
 	/**
 	 * Supprime l'employé. Si celui-ci est un administrateur, le root

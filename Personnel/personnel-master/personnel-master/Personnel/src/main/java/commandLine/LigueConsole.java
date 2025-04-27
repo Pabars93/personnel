@@ -2,6 +2,9 @@ package commandLine;
 
 import static commandLineMenus.rendering.examples.util.InOut.getString;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
 import commandLineMenus.List;
@@ -14,11 +17,30 @@ public class LigueConsole
 {
 	private GestionPersonnel gestionPersonnel;
 	private EmployeConsole employeConsole;
+	private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 	public LigueConsole(GestionPersonnel gestionPersonnel, EmployeConsole employeConsole)
 	{
 		this.gestionPersonnel = gestionPersonnel;
 		this.employeConsole = employeConsole;
+	}
+
+	private LocalDate getDate(String message, boolean allowNull)
+	{
+		while (true)
+		{
+			String input = getString(message + " (format dd/MM/yyyy" + (allowNull ? ", vide si aucune date" : "") + ") : ");
+			if (allowNull && input.trim().isEmpty())
+				return null;
+			try
+			{
+				return LocalDate.parse(input, DATE_FORMAT);
+			}
+			catch (DateTimeParseException e)
+			{
+				System.out.println("Format de date invalide. Veuillez réessayer.");
+			}
+		}
 	}
 
 	Menu menuLigues()
@@ -97,9 +119,23 @@ public class LigueConsole
 		return new Option("ajouter un employé", "a",
 				() -> 
 				{
-					ligue.addEmploye(getString("nom : "), 
-						getString("prenom : "), getString("mail : "), 
-						getString("password : "));
+					try
+					{
+						LocalDate dateArrive = getDate("Date d'arrivée", false);
+						LocalDate dateDepart = getDate("Date de départ", true);
+						ligue.addEmploye(
+							getString("nom : "), 
+							getString("prenom : "), 
+							getString("mail : "), 
+							getString("password : "),
+							dateArrive,
+							dateDepart
+						);
+					}
+					catch (Erreurdate e)
+					{
+						System.err.println(e.getMessage());
+					}
 				}
 		);
 	}
