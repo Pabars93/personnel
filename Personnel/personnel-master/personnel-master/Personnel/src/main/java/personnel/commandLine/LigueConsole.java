@@ -1,4 +1,4 @@
-package commandLine;
+package personnel.commandLine;
 
 import static commandLineMenus.rendering.examples.util.InOut.getString;
 

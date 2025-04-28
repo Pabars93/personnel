@@ -1,4 +1,4 @@
-package commandLine;
+package personnel.commandLine;
 
 import personnel.*;
 import commandLineMenus.*;
